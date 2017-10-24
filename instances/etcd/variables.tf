@@ -10,6 +10,7 @@ variable "shape" {
 variable "subnet_id" {}
 variable "ssh_public_key_openssh" {}
 variable "domain_name" {}
+
 variable "label_prefix" {
   default = ""
 }

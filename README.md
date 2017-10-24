@@ -17,7 +17,7 @@ used to provision and configure the resources needed to run a highly available a
 
 The base Terraform infrastructure configuration and default variables provision:
 
-- a Virtual Cloud Network with a CIDR block of 10.0.0.0/16 and dedicated public subnets for etcd, workers, and masters
+- a Virtual Cloud Network with a CIDR block of 10.0.0.0/16 and dedicated internal subnets for etcd, workers, and masters
 - a dedicated set of Instances for the Kubernetes control plane to run on
 - a _public_ OCI TCP/SSL Load Balancer to front-end the K8s API server cluster
 - a _private_ OCI Load Balancer to front-end the etcd cluster
@@ -164,7 +164,7 @@ worker_ssh_ingress = "0.0.0.0/0"
 $ terraform output ssh_private_key > generated/instances_id_rsa
 # Retrieve public IP for etcd nodes
 $ terraform output etcd_public_ips
-# Log in as user opc to the Oracle Linux OS
+# Log in as user opc to the OEL OS
 $ ssh -i `pwd`/generated/instances_id_rsa opc@ETCD_INSTANCE_IP
 # Retrieve public IP for k8s masters
 $ terraform output master_public_ips
@@ -238,7 +238,7 @@ flannel_ver                         | v0.7.1             | Version of Flannel to
 k8s_ver                             | 1.7.4              | Version of K8s to install (master and workers)
 k8s_dns_ver                         | 1.14.2             | Version of Kube DNS to install
 k8s_dashboard_ver                   | 1.6.3              | Version of Kubernetes dashboard to install
-instance_os_ver                     | 7.4                | Version of Oracle Linux operating system
+instance_os_ver                     | 7.4                | Version of OEL operating system
 
 #### Other
 name                                | default                 | description
@@ -250,7 +250,7 @@ label_prefix                        | ""                      | Unique identifie
 
 #### Deploying a new cluster
 
-Override any of the above input variables in your terraform.tfvars and run the plan and apply commands:
+Override any of the above input variables in your terraform.vars and run the plan and apply commands:
 
 ```bash
 # verify what will change
@@ -263,7 +263,7 @@ $ terraform apply
 #### Scaling k8s workers (in or out) using terraform apply
 
 To scale workers in or out, adjust the `k8sWorkerAd1Count`, `k8sWorkerAd2Count`, or `k8sWorkerAd3Count` input 
-variables in terraform.tfvars and run the plan and apply commands:
+variables in terraform.vars and run the plan and apply commands:
 
 ```bash
 # verify changes
@@ -280,7 +280,7 @@ When scaling worker nodes _down_, the instances/k8sworker module's user_data cod
 
 #### Scaling k8s masters (in or out) using terraform apply
 
-To scale the masters in or out, adjust the `k8sMasterAd1Count`, `k8sMasterAd2Count`, or `k8sMasterAd3Count` input variables in terraform.tfvars and run the plan and apply commands:
+To scale the masters in or out, adjust the `k8sMasterAd1Count`, `k8sMasterAd2Count`, or `k8sMasterAd3Count` input variables in terraform.vars and run the plan and apply commands:
 
 ```bash
 # verify changes
